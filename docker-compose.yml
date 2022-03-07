@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+    api:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        environment:
+            - DB=mongodb+srv://user:1234567890@cluster0.ecduv.mongodb.net/test
+        volumes:
+            - ./:/user/app
+        ports:
+            - 5000:5000
+    redis:
+        image: redis:alpine
+        container_name: redis
+        command: redis-server /usr/local/etc/redis.conf --requirepass mypassword
+        volumes:
+            - ./src/config/redis.conf:/usr/local/etc/redis.conf
+        ports:
+            - '6379:6379'
+
+    # ngnix:
+    #     image: nginx:latest
+    #     ports:
+    #         - 80:80
+    #     volumes:
+    #         - ./nginx.conf:/etc/nginx/nginx.conf
